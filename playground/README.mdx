@@ -1,35 +1,24 @@
-# Compound Components
+# Compound Components Validation
 
-In this exercise we're going to make `<Toggle />` the parent of a few compound
-components:
+Change <InlineFile file="app.tsx" /> to this (temporarily):
 
-- `<ToggleOn />` renders children when the `on` state is `true`
-- `<ToggleOff />` renders children when the `on` state is `false`
-- `<ToggleButton />` renders the `<Switch />` with the `on` prop set to the `on`
-  state and the `onClick` prop set to `toggle`.
+```javascript
+import { ToggleButton } from './toggle'
 
-We have a Toggle component that manages the state, and we want to render
-different parts of the UI however we want. We want control over the presentation
-of the UI.
+export const App = () => <ToggleButton />
+```
 
-🦉 The fundamental challenge you face with an API like this is the state shared
-between the components is implicit, meaning that the developer using your
-component cannot actually see or interact with the state (`on`) or the
-mechanisms for updating that state (`toggle`) that are being shared between the
-components.
+Why doesn't that work (it's not supposed to, but can you explain why)? Can you
+figure out a way to give the developer a better error message that explains what
+they're doing wrong and how to fix it?
 
-So in this exercise, we'll solve that problem by using the 📜
-[React Context API](https://reactjs.org/docs/hooks-reference.html#use)!
+🚨 The tests will tell you the message for the error you must throw when the
+context is undefined.
 
-What we want to do in this exercise is allow users of our component to render
-something when the toggle button is on and to render something else when that
-toggle button is off without troubling them with managing the state that's
-controlling whether it's shown or not.
+🦺 Additionally, this is where we can make TypeScript happier (TypeScript knew
+about the problem we'd run into in this step of the exercise!). Remember,
+TypeScript isn't making your life terrible. It's just showing you how terrible
+your life already is 😂 In this exercise, we're going to make our lives better.
 
-Your job will be to make a `ToggleContext` which will be used to implicitly
-share the state between these components. The `Toggle` component will render the
-`ToggleContext.Provider` and the other compound components will access that
-implicit state via `use(ToggleContext)`.
-
-🦺 TypeScript might not like your `use` call depending on how you set up your
-context. We'll deal with this in another step.
+(You can go ahead and undo the change to <InlineFile file="app.tsx" /> if you'd
+like. The tests will let you know that you've gotten it right).
