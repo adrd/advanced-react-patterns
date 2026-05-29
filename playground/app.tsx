@@ -1,16 +1,34 @@
-// import { Toggle, ToggleButton, ToggleOff, ToggleOn } from './toggle.tsx'
-import { ToggleButton } from './toggle.tsx'
+import { useId } from 'react'
+import { Input, Label } from './slots.tsx'
+import { TextField } from './text-field.tsx'
+import { Toggle, ToggleButton, ToggleOff, ToggleOn } from './toggle.tsx'
 
-export const App = () => <ToggleButton />
+export function App() {
+	console.log(`App component start executing...`)
 
-// export function App() {
-// 	return (
-// 		<div>
-// 			<Toggle>
-// 				<ToggleOn>The button is on</ToggleOn>
-// 				<ToggleOff>The button is off</ToggleOff>
-// 				<ToggleButton />
-// 			</Toggle>
-// 		</div>
-// 	)
-// }
+	const partyModeId = useId()
+
+	console.log(`App component start rendering...`)
+
+	return (
+		<div>
+			<div>
+				<Toggle>
+					<label htmlFor={partyModeId}>Party mode</label>
+					<ToggleButton id={partyModeId} />
+					<ToggleOn>Let's party 🥳</ToggleOn>
+					<ToggleOff>Sad town 😭</ToggleOff>
+				</Toggle>
+			</div>
+			<hr />
+			<div>
+				{/* 🦉 feel free to test the id customization by passing an id here */}
+				<TextField id="my-text">
+					{/* 🦉 feel free to test the prop merging by passing props here */}
+					<Label htmlFor="my-non-text">Venue</Label>
+					<Input id="my-non-text" />
+				</TextField>
+			</div>
+		</div>
+	)
+}
