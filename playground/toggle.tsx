@@ -1,39 +1,15 @@
-import { useId, useState } from 'react'
-import { SlotContext } from './slots'
+import { useState } from 'react'
 
-export function Toggle({
-	id,
-	children,
-}: {
-	id?: string
-	children: React.ReactNode
-}) {
-	console.log(`Toggle start executing...`)
-	
+export function useToggle() {
+	console.log(`useToggle() called`)
+
 	const [on, setOn] = useState(false)
-	
-	const generatedId = useId()
-	id = id ?? generatedId
-	
 	const toggle = () => setOn(!on)
-	
-	const labelProps = { htmlFor: id }
-	const onTextProps = { hidden: on ? undefined : true }
-	const offTextProps = { hidden: on ? true : undefined }
-	const switchProps = { id, on, onClick: toggle }
-	
-	console.log(`Toggle start rendering...`)
-	
-	return (
-		<SlotContext.Provider
-			value={{
-				label: labelProps,
-				onText: onTextProps,
-				offText: offTextProps,
-				switch: switchProps,
-			}}
-		>
-			{children}
-		</SlotContext.Provider>
-	)
+
+	// 🐨 Add a property called `togglerProps`. It should be an object that has
+	// `aria-checked` and `onClick` properties.
+	return { on, toggle, togglerProps: {
+		'aria-checked': on,
+		onClick: toggle
+	} }
 }

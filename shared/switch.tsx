@@ -22,11 +22,13 @@ export function Switch({
 		.filter(Boolean)
 		.join(' ')
 
+	console.log(`props = `, props)	
+
 	return (
 		<button
 			role="switch"
 			aria-label={ariaLabel ?? 'Toggle'}
-			aria-checked={on}
+			// aria-checked={on}
 			onClick={onClick}
 			className={btnClassName}
 			{...props}
