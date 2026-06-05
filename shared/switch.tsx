@@ -28,8 +28,8 @@ export function Switch({
 		<button
 			role="switch"
 			aria-label={ariaLabel ?? 'Toggle'}
-			// aria-checked={on}
-			// onClick={onClick}
+			aria-checked={on}
+			onClick={onClick}
 			className={btnClassName}
 			{...props}
 		/>

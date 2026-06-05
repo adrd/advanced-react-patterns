@@ -1,33 +1,45 @@
-import { useState } from 'react'
+import { useReducer, useRef } from 'react'
 
 function callAll<Args extends Array<unknown>>(
 	...fns: Array<((...args: Args) => unknown) | undefined>
 ) {
-	console.log(`callAll() called`)
-	console.log(`fns = `, fns)
-
 	return (...args: Args) => fns.forEach(fn => fn?.(...args))
 }
 
-export function useToggle() {
+type ToggleState = { on: boolean }
+type ToggleAction =
+	| { type: 'toggle' }
+	| { type: 'reset'; initialState: ToggleState }
+
+function toggleReducer(state: ToggleState, action: ToggleAction) {
+	switch (action.type) {
+		case 'toggle': {
+			return { on: !state.on }
+		}
+		case 'reset': {
+			return action.initialState
+		}
+	}
+}
+
+// 🐨 add a new option called `reducer` that defaults to `toggleReducer`
+export function useToggle({ initialOn = false, reducer = toggleReducer } = {}) {
 	console.log(`useToggle() called`)
 
-	const [on, setOn] = useState(false)
-	const toggle = () => setOn(!on)
+	const { current: initialState } = useRef<ToggleState>({ on: initialOn })
+	// 🐨 instead of passing `toggleReducer` here, pass the `reducer` that's
+	// provided as an option
+	// ... and that's it! Don't forget to check the next step!
+	const [state, dispatch] = useReducer(reducer, initialState)
+	const { on } = state
 
-	// 🐨 create a function called getTogglerProps that accepts an object
-	// of props and returns an object of props that includes 'aria-clicked' and onClick.
-
-	// 💰 Make sure to handle the case where the user provides their own
-	// 'aria-checked' and 'onClick' props (as well as if they don't or if they
-	// provide more props).
+	const toggle = () => dispatch({ type: 'toggle' })
+	const reset = () => dispatch({ type: 'reset', initialState })
 
 	function getTogglerProps<Props>({
 		onClick,
 		...props
-	}: {
-		onClick?: React.DOMAttributes<HTMLButtonElement>['onClick']
-	} & Props) {
+	}: { onClick?: React.DOMAttributes<HTMLButtonElement>['onClick'] } & Props) {
 		return {
 			'aria-checked': on,
 			onClick: callAll(onClick, toggle),
@@ -35,14 +47,21 @@ export function useToggle() {
 		}
 	}
 
+	function getResetterProps<Props>({
+		onClick,
+		...props
+	}: { onClick?: React.DOMAttributes<HTMLButtonElement>['onClick'] } & Props) {
+		return {
+			onClick: callAll(onClick, reset),
+			...props,
+		}
+	}
+
 	return {
 		on,
+		reset,
 		toggle,
-		// 🐨 swap togglerProps with getTogglerProps
-		getTogglerProps
-		// togglerProps: {
-		// 	'aria-checked': on,
-		// 	onClick: toggle,
-		// },
+		getTogglerProps,
+		getResetterProps,
 	}
 }
