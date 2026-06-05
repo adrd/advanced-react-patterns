@@ -1,23 +1,22 @@
-// import { useId } from 'react'
-import { Input, Label } from './slots.tsx'
+// import { Input, Label, Switch, Text } from './slots.tsx'
+import { Input, Label, Switch, ToggleText } from './slots.tsx'
 import { TextField } from './text-field.tsx'
-import { Toggle, ToggleButton, ToggleOff, ToggleOn } from './toggle.tsx'
+import { Toggle } from './toggle.tsx'
 
 export function App() {
-	console.log(`App component start executing...`)
-
-	console.log(`App component start rendering...`)
-
 	return (
 		<div>
 			<div>
 				<Toggle>
-					{/* 🐨 switch this label for the Label component from ./slots.tsx */}
 					<Label>Party mode</Label>
-					{/* 🐨 remove this id prop */}
-					<ToggleButton />
-					<ToggleOn>Let's party 🥳</ToggleOn>
-					<ToggleOff>Sad town 😭</ToggleOff>
+					{/* 🐨 switch this for the Switch slot component */}
+					<Switch />
+					{/* 🐨 change these to the Text slot component with appropriate slot props */}
+					<ToggleText slot="onText">Let's party 🥳</ToggleText>
+					<ToggleText slot="offText">Sad town 😭</ToggleText>
+
+					{/* <Text slot="onText">Let's party 🥳</Text>
+					<Text slot="offText">Sad town 😭</Text> */}
 				</Toggle>
 			</div>
 			<hr />

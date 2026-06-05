@@ -16,6 +16,8 @@ export function TextField({
 	const labelProps = { htmlFor: id }
 	const inputProps = { id }
 
+	console.log(`TextField start rendering...`)
+
 	return (
 		<SlotContext.Provider value={{ label: labelProps, input: inputProps }}>
 			{children}
