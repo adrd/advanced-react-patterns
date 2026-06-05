@@ -11,7 +11,7 @@ type ToggleAction =
 	| { type: 'toggle' }
 	| { type: 'reset'; initialState: ToggleState }
 
-function toggleReducer(state: ToggleState, action: ToggleAction) {
+export function toggleReducer(state: ToggleState, action: ToggleAction) {
 	switch (action.type) {
 		case 'toggle': {
 			return { on: !state.on }
@@ -22,14 +22,8 @@ function toggleReducer(state: ToggleState, action: ToggleAction) {
 	}
 }
 
-// 🐨 add a new option called `reducer` that defaults to `toggleReducer`
 export function useToggle({ initialOn = false, reducer = toggleReducer } = {}) {
-	console.log(`useToggle() called`)
-
 	const { current: initialState } = useRef<ToggleState>({ on: initialOn })
-	// 🐨 instead of passing `toggleReducer` here, pass the `reducer` that's
-	// provided as an option
-	// ... and that's it! Don't forget to check the next step!
 	const [state, dispatch] = useReducer(reducer, initialState)
 	const { on } = state
 

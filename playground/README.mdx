@@ -1,15 +1,21 @@
-# State Reducer
+# Default State Reducer
 
-In this exercise, we want to prevent the toggle from updating the toggle state
-after it's been clicked 4 times in a row before resetting. We could easily add
-that logic to our reducer, but instead we're going to apply a computer science
-pattern called "Inversion of Control" where we effectively say: "Here you go!
-You have complete control over how this thing works. It's now your
-responsibility."
+Our `toggleReducer` is pretty simple, so it's not a huge pain for people to
+implement their own. However, in a more realistic scenario, people may struggle
+with having to basically re-implement our entire reducer which could be pretty
+complex.
 
-> As an aside, before React Hooks were a thing, this was pretty tricky to
-> implement and resulted in pretty weird code, but with useReducer, this is WAY
-> better. I ❤️ hooks. 😍
+So for the this step, we're going to "export" the default reducer so people can
+use that inside their own reducers as needed. In a real-world scenario, your
+reusable hook will be in a separate file and you'll need to export the reducer.
+Feel free to add a comment for that if you like (for example):
 
-Your job is to enable people to provide a custom `reducer` so they can have
-complete control over how state updates happen in our `<Toggle />` component.
+```ts
+// export {useDownshift, downshiftReducer}
+
+// immport {useDownshift, downshiftReducer} from 'downshift'
+```
+
+Go ahead and do this by changing the `toggleStateReducer` function inside the
+`<App />` example to use the default reducer instead of having to re-implement
+what to do when the action type is `'reset'`.
