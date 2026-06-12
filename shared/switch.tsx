@@ -22,7 +22,7 @@ export function Switch({
 		.filter(Boolean)
 		.join(' ')
 
-	console.log(`props = `, props)	
+	// console.log(`props = `, props)	
 
 	return (
 		<button

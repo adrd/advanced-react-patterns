@@ -1,48 +1,65 @@
 import { useState } from 'react'
-import { Switch } from '#shared/switch.tsx'
-import { useToggle,toggleReducer } from './toggle.tsx'
+import { Toggle, type ToggleAction, type ToggleState } from './toggle.tsx'
 
 export function App() {
 	console.log(`App component start executing`)
-
+	
+	const [bothOn, setBothOn] = useState(true)
 	const [timesClicked, setTimesClicked] = useState(0)
-	const clickedTooMuch = timesClicked >= 4
 
-	const { on, getTogglerProps, getResetterProps } = useToggle({
-		reducer(state, action) {
-			console.log(`reducer called `)
-			console.log(`reducer state = `, state)
-			console.log(`reducer action.type = `, action.type)
+	console.log(`bothOn = ${bothOn}`)
+	console.log(`timesClicked = ${timesClicked}`)
+	
+	function handleToggleChange(state: ToggleState, action: ToggleAction) {
+		console.log(`handleToggleChange called with action = ${action.type}`)
 
-			if (action.type === 'toggle' && clickedTooMuch) {
-				return state
-			}
-			
-			return toggleReducer(state, action)
-		},
-	})
+		if (action.type === 'toggle' && timesClicked > 4) {
+			return
+		}
 
+		setBothOn(state.on)
+		setTimesClicked(c => c + 1)
+	}
+	
+	function handleResetClick() {
+		console.log(`handleResetClick called`)
+
+		setBothOn(false)
+		setTimesClicked(0)
+	}
+	
 	console.log(`App component start rendering`)
-
+	
 	return (
 		<div>
-			<Switch
-				{...getTogglerProps({
-					on: on,
-					onClick: () => setTimesClicked(count => count + 1),
-				})}
-			/>
-			{clickedTooMuch ? (
+			<div>
+				<Toggle on={bothOn} onChange={handleToggleChange} />
+				<Toggle on={bothOn} onChange={handleToggleChange} />
+			</div>
+
+			{timesClicked > 4 ? (
 				<div data-testid="notice">
 					Whoa, you clicked too much!
 					<br />
 				</div>
-			) : timesClicked > 0 ? (
+			) : (
 				<div data-testid="click-count">Click count: {timesClicked}</div>
-			) : null}
-			<button {...getResetterProps({ onClick: () => setTimesClicked(0) })}>
-				Reset
-			</button>
+			)}
+
+			<button onClick={handleResetClick}>Reset</button>
+			<hr />
+			
+			<div>
+				<div>Uncontrolled Toggle:</div>
+				<Toggle
+					onChange={(...args) => {
+						console.info('Uncontrolled Toggle onChange', ...args)
+						debugger
+					}
+						
+					}
+				/>
+			</div>
 		</div>
 	)
 }
